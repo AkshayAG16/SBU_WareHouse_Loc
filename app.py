@@ -40,6 +40,18 @@ def load_excel_data():
                 location = str(row["Location"]).strip()
                 loc_type = row["Location Type"]
 
+                # NEW FIELDS
+                date = str(row["Date"]).strip()
+                qty = str(row["Qty"]).strip()
+
+                # format date
+                try:
+                    date = pd.to_datetime(date).strftime("%d/%m/%Y")
+                except:
+                    pass
+
+                location_info = f"{date} | {location} | {qty}"
+
                 if part not in parts_db:
                     parts_db[part] = {
                         "plant": plant,
@@ -48,10 +60,10 @@ def load_excel_data():
                     }
 
                 if loc_type == "primary":
-                    parts_db[part]["primary"].append(location)
+                    parts_db[part]["primary"].append(location_info)
 
                 elif loc_type == "secondary":
-                    parts_db[part]["secondary"].append(location)
+                    parts_db[part]["secondary"].append(location_info)
 
     print("Total parts loaded:", len(parts_db))
 
