@@ -28,7 +28,8 @@ def load_excel_data():
 
             print("Loading:", path)
 
-            df = pd.read_excel(path)
+            # Treat "Date" column as text to avoid parsing
+            df = pd.read_excel(path, dtype={'Date': str})
             df.columns = df.columns.str.strip()
 
             df["Part No"] = df["Part No"].astype(str).str.strip().str.upper()
@@ -44,12 +45,7 @@ def load_excel_data():
                 date = str(row["Date"]).strip()
                 qty = str(row["Qty"]).strip()
 
-                # format date
-                try:
-                    date = pd.to_datetime(date).strftime("%d/%m/%Y")
-                except:
-                    pass
-
+                # No date formatting, keep as-is
                 location_info = f"{date} | {location} | {qty}"
 
                 if part not in parts_db:
