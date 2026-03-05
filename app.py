@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-PLANT_FOLDER = "plants"
+PLANT_FOLDER = "Plants"
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -76,3 +76,4 @@ def upload():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
