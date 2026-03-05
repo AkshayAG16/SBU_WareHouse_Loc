@@ -1,3 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>MLL SBU Part Finder</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
+
+/* FIXED BACKGROUND */
+body{
+background:url("/static/background.jpg") no-repeat center center fixed;
+background-size:cover;
+min-height:100vh;
+}
+
+/* DARK OVERLAY */
+.overlay{
+background:rgba(0,0,0,0.65);
+min-height:100vh;
+padding-top:80px;
+text-align:center;
+color:white;
+}
+
+/* TITLE */
+.title{
+font-size:40px;
+letter-spacing:3px;
+margin-bottom:40px;
+}
+
+/* SEARCH */
+.search-box input{
+padding:14px;
+width:260px;
+border:none;
+border-radius:6px;
+}
+
+.search-box button{
+padding:14px 24px;
+background:#007BFF;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+}
+
+.search-box button:hover{
+background:#0056b3;
+}
+
+/* RESULT BOX */
+.result-box{
+margin:40px auto;
+background:rgba(255,255,255,0.12);
+padding:25px;
+border-radius:10px;
+width:320px;
+backdrop-filter:blur(6px);
+}
+
+.section{
+margin-top:15px;
+text-align:left;
+}
+
+.section-title{
+font-weight:500;
+margin-bottom:5px;
+color:#7fd3ff;
+}
+
+.location{
+margin-left:10px;
+}
+
+.error{
+margin-top:30px;
+color:#ffb3b3;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:60px;
+text-align:center;
+}
+
+.footer .design{
+color:white;
+font-size:14px;
+}
+
+.footer .name{
+color:#007BFF;
+font-family:'Pacifico', cursive;
+font-size:22px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay">
+
+<div class="title">MLL SBU</div>
+
+<div class="search-box">
+
+<form method="POST">
+
+<input type="text" name="part_no" placeholder="Enter Part Number" required>
+
+<button type="submit">Search</button>
+
+</form>
+
+</div>
+
 {% if searched_part %}
 
 <div class="result-box">
@@ -11,6 +146,7 @@
 {% if primary_locations %}
 
 <div class="section">
+
 <div class="section-title">Primary Location</div>
 
 {% for p in primary_locations %}
@@ -24,6 +160,7 @@
 {% if secondary_locations %}
 
 <div class="section">
+
 <div class="section-title">Secondary Location</div>
 
 {% for s in secondary_locations %}
@@ -37,3 +174,23 @@
 </div>
 
 {% endif %}
+
+{% if message %}
+
+<div class="error">
+{{message}}
+</div>
+
+{% endif %}
+
+<div class="footer">
+
+<div class="design">Designed by</div>
+<div class="name">Akshay Ghegadmal</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
