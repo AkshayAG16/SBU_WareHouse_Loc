@@ -4,7 +4,8 @@ import os
 
 app = Flask(__name__)
 
-PLANT_FOLDER = os.path.join(os.getcwd(), "Plants")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PLANT_FOLDER = os.path.join(BASE_DIR, "Plants")
 
 # In-memory database
 parts_db = {}
@@ -14,12 +15,18 @@ def load_excel_data():
     global parts_db
     parts_db = {}
 
+    if not os.path.exists(PLANT_FOLDER):
+        print("Plants folder not found")
+        return
+
     for file in os.listdir(PLANT_FOLDER):
 
         if file.endswith(".xlsx"):
 
             plant = file.replace(".xlsx","")
             path = os.path.join(PLANT_FOLDER, file)
+
+            print("Loading:", path)
 
             df = pd.read_excel(path)
             df.columns = df.columns.str.strip()
@@ -45,6 +52,9 @@ def load_excel_data():
 
                 elif loc_type == "secondary":
                     parts_db[part]["secondary"].append(location)
+
+    print("Total parts loaded:", len(parts_db))
+
 
 # Load Excel when server starts
 load_excel_data()
