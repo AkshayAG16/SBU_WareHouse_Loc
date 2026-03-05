@@ -87,6 +87,9 @@ color:#7fd3ff;
 .location{
 margin-left:10px;
 margin-bottom:4px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
 
 .error{
@@ -95,7 +98,6 @@ color:#ffb3b3;
 }
 
 /* FOOTER */
-
 .footer{
 margin-top:60px;
 text-align:center;
@@ -109,7 +111,7 @@ font-size:14px;
 .footer .name{
 color:#007BFF;
 font-family:'Pacifico', cursive;
-font-size:22px;
+font-size:24px;
 }
 
 </style>
@@ -145,31 +147,25 @@ font-size:22px;
 {% endif %}
 
 {% if primary_locations %}
-
 <div class="section">
-
 <div class="section-title">Primary Location</div>
-
 {% for p in primary_locations %}
 <div class="location">{{ p }}</div>
 {% endfor %}
-
 </div>
-
 {% endif %}
 
 {% if secondary_locations %}
-
 <div class="section">
-
 <div class="section-title">Secondary Location</div>
-
 {% for s in secondary_locations %}
 <div class="location">{{ s }}</div>
 {% endfor %}
-
 </div>
+{% endif %}
 
+{% if not primary_locations and not secondary_locations %}
+<p class="error">No locations available for this part.</p>
 {% endif %}
 
 </div>
@@ -177,18 +173,14 @@ font-size:22px;
 {% endif %}
 
 {% if message %}
-
 <div class="error">
 {{message}}
 </div>
-
 {% endif %}
 
 <div class="footer">
-
 <div class="design">Designed by</div>
 <div class="name">Akshay Ghegadmal</div>
-
 </div>
 
 </div>
