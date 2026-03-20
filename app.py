@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import os
-from threading import Thread
 
 app = Flask(__name__)
 
@@ -12,6 +11,7 @@ PLANT_FOLDER = os.path.join(BASE_DIR, "Plants")
 parts_db = {}
 
 def load_excel_data():
+
     global parts_db
     parts_db = {}
 
@@ -20,13 +20,15 @@ def load_excel_data():
         return
 
     for file in os.listdir(PLANT_FOLDER):
+
         if file.endswith(".xlsx"):
 
-            plant = file.replace(".xlsx", "")
+            plant = file.replace(".xlsx","")
             path = os.path.join(PLANT_FOLDER, file)
 
             print("Loading:", path)
 
+            # Treat "Date" column as text to avoid parsing
             df = pd.read_excel(path, dtype={'Date': str})
             df.columns = df.columns.str.strip()
 
@@ -34,13 +36,16 @@ def load_excel_data():
             df["Location Type"] = df["Location Type"].astype(str).str.strip().str.lower()
 
             for _, row in df.iterrows():
+
                 part = row["Part No"]
                 location = str(row["Location"]).strip()
                 loc_type = row["Location Type"]
 
+                # NEW FIELDS
                 date = str(row["Date"]).strip()
                 qty = str(row["Qty"]).strip()
 
+                # No date formatting, keep as-is
                 location_info = f"{date} | {location} | {qty}"
 
                 if part not in parts_db:
@@ -59,14 +64,11 @@ def load_excel_data():
     print("Total parts loaded:", len(parts_db))
 
 
-# 🔥 Run loading in background
-def start_background_loading():
-    thread = Thread(target=load_excel_data)
-    thread.daemon = True
-    thread.start()
+# Load Excel when server starts
+load_excel_data()
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET","POST"])
 def index():
 
     searched_part = ""
@@ -98,10 +100,5 @@ def index():
     )
 
 
-# 🔥 Start background loading when app boots
-start_background_loading()
-
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=10000)
